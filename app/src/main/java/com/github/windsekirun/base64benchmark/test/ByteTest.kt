@@ -1,9 +1,6 @@
 package com.github.windsekirun.base64benchmark.test
 
-import com.github.windsekirun.base64benchmark.codec.AndroidImpl
-import com.github.windsekirun.base64benchmark.codec.ApacheImpl
-import com.github.windsekirun.base64benchmark.codec.Java8Impl
-import com.github.windsekirun.base64benchmark.codec.MiGImpl
+import com.github.windsekirun.base64benchmark.Constants.byteCodecList
 import com.github.windsekirun.base64benchmark.impl.Base64ByteCodec
 import com.github.windsekirun.base64benchmark.model.TestResult
 import com.github.windsekirun.base64benchmark.model.measureTimeStopWatch
@@ -20,8 +17,6 @@ import kotlin.collections.HashMap
  * Description:
  */
 
-val byteCodecList: List<Base64ByteCodec> =
-    listOf(AndroidImpl(), ApacheImpl(), Java8Impl(), MiGImpl())
 
 fun testBytes(bufferSize: Int): HashMap<String, TestResult> {
     val r = Random(125)

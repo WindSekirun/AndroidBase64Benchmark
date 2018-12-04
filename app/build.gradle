@@ -45,7 +45,7 @@ dependencies {
     // guava
     // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation 'com.google.guava:guava:27.0.1-android'
-    // MIG Base64
+    // MIG IHarderBase64
     // https://mvnrepository.com/artifact/com.brsanthu/migbase64
     implementation 'com.brsanthu:migbase64:2.2'
 

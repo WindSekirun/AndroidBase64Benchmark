@@ -1,5 +1,6 @@
 package com.github.windsekirun.base64benchmark.test
 
+import com.github.windsekirun.base64benchmark.Constants.byteCodecList
 import com.github.windsekirun.base64benchmark.impl.Base64ByteCodec
 import com.github.windsekirun.base64benchmark.model.TestResult
 import com.github.windsekirun.base64benchmark.model.measureTimeStopWatch

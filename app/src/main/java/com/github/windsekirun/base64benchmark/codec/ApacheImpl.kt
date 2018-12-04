@@ -27,7 +27,7 @@ class ApacheImpl : Base64ByteCodec, Base64Codec {
     }
 
     override fun decode(base64: String): ByteArray {
-        // can't use Base64.decodeBase64(base64) (NoSuchMethodError: No static method decodeBase64)
+        // can't use IHarderBase64.decodeBase64(base64) (NoSuchMethodError: No static method decodeBase64)
         return Base64.decodeBase64(base64.toByteArray())
     }
 

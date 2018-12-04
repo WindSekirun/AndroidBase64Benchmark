@@ -1,5 +1,6 @@
 package com.github.windsekirun.base64benchmark.test
 
+import com.github.windsekirun.base64benchmark.Constants.codecList
 import com.github.windsekirun.base64benchmark.codec.*
 import com.github.windsekirun.base64benchmark.impl.Base64Codec
 import com.github.windsekirun.base64benchmark.model.TestResult
@@ -16,8 +17,7 @@ import java.util.*
  * Description:
  */
 
-val codecList: List<Base64Codec> =
-    listOf(AndroidImpl(), ApacheImpl(), Java8Impl(), MiGImpl(), GuavaImpl())
+
 
 @Throws(IOException::class, InterruptedException::class)
 fun testString(bufferSize: Int): Map<String, TestResult> {

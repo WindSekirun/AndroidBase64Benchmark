@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         val result = testFile(file)
         val builder = StringBuilder()
-        builder.append("Test encoding file ${file.name} into Base64")
+        builder.append("Test encoding file ${file.name} into IHarderBase64")
             .append(System.lineSeparator())
             .append(result.toMapString())
             .append(System.lineSeparator())
