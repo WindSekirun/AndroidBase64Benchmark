@@ -6,7 +6,7 @@ import com.github.windsekirun.base64benchmark.codec.Java8Impl
 import com.github.windsekirun.base64benchmark.codec.MiGImpl
 import com.github.windsekirun.base64benchmark.impl.Base64ByteCodec
 import com.github.windsekirun.base64benchmark.model.TestResult
-import java.io.File
+import com.github.windsekirun.base64benchmark.model.measureTimeStopWatch
 import java.io.IOException
 import java.util.*
 import kotlin.collections.HashMap
@@ -20,11 +20,12 @@ import kotlin.collections.HashMap
  * Description:
  */
 
-val byteCodecList: List<Base64ByteCodec> = listOf(AndroidImpl(), ApacheImpl(), Java8Impl(), MiGImpl())
+val byteCodecList: List<Base64ByteCodec> =
+    listOf(AndroidImpl(), ApacheImpl(), Java8Impl(), MiGImpl())
 
 fun testBytes(bufferSize: Int): HashMap<String, TestResult> {
-    val r = Random(125) //seed is set to make results reproducible
-    val buffers = ArrayList<ByteArray>(bufferSize)
+    val r = Random(125)
+    val buffers = ArrayList<ByteArray>()
     for (i in 0 until bufferSize) {
         val buf = ByteArray(bufferSize)
         r.nextBytes(buf)
@@ -42,19 +43,14 @@ fun testBytes(bufferSize: Int): HashMap<String, TestResult> {
 
 @Throws(IOException::class)
 private fun testByteCodec(codec: Base64ByteCodec, buffers: List<ByteArray>): TestResult {
-    val encoded = ArrayList<ByteArray>(buffers.size)
-    val start = System.currentTimeMillis()
-    for (buf in buffers) encoded.add(codec.encodeBytes(buf))
-    val encodeTime = System.currentTimeMillis() - start
+    val encoded = ArrayList<ByteArray>()
+    val result = ArrayList<ByteArray>()
 
-    val result = ArrayList<ByteArray>(buffers.size)
-    val start2 = System.currentTimeMillis()
-    for (ar in encoded) result.add(codec.decodeBytes(ar))
-    val decodeTime = System.currentTimeMillis() - start2
+    val encodeTime =
+        measureTimeStopWatch { for (buf in buffers) encoded.add(codec.encodeBytes(buf)) }
 
-    for (i in buffers.indices) {
-        if (!Arrays.equals(buffers[i], result[i])) println("Diff at pos = $i")
-    }
-    return TestResult(encodeTime / 1000.0, decodeTime / 1000.0)
+    val decodeTime =
+        measureTimeStopWatch { for (ar in encoded) result.add(codec.decodeBytes(ar)) }
+
+    return TestResult(encodeTime.toDouble(), decodeTime.toDouble())
 }
-

@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.text.format.Formatter
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.github.windsekirun.base64benchmark.test.testBytes
@@ -13,6 +14,7 @@ import com.github.windsekirun.base64benchmark.test.testString
 import kotlinx.android.synthetic.main.activity_main.*
 import pyxis.uzuki.live.richutilskt.utils.RPickMedia
 import pyxis.uzuki.live.richutilskt.utils.toFile
+import pyxis.uzuki.live.richutilskt.utils.toast
 
 /**
  * Base64Benchmark
@@ -43,6 +45,8 @@ class MainActivity : AppCompatActivity() {
             val text = txtResult.text
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboardManager.primaryClip = ClipData.newPlainText("text", text)
+
+            toast("Copied to clipboard.")
         }
 
         btnPicture.setOnClickListener {
@@ -67,12 +71,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runFileTest(path: String) {
-        val result = testFile(path.toFile())
+        val file = path.toFile()
+
+        val result = testFile(file)
         val builder = StringBuilder()
-        builder.append("Test encoding file $path into Base64")
-        builder.append(System.lineSeparator())
+        builder.append("Test encoding file ${file.name} into Base64")
+                .append(System.lineSeparator())
                 .append(result.toMapString())
                 .append(System.lineSeparator())
+
         testEnd(builder.toString())
     }
 
