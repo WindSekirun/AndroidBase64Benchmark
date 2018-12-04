@@ -33,26 +33,21 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // AndroidX
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    // apache
+
+    // Base64 Library Gradle
     implementation 'commons-codec:commons-codec:1.11'
-    // guava
     implementation 'com.google.guava:guava:27.0.1-android'
-    // MIG Base64
     implementation 'com.brsanthu:migbase64:2.2'
-
-    // Richutilskt
-    implementation 'com.github.WindSekirun:RichUtilsKt:2.3.2'
-
-    // Commons-lang3
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
-
-    // iharder
     implementation group: 'net.iharder', name: 'base64', version: '2.3.9'
 
+    // RichUtilsKt (RPickMedia... etc)
+    implementation 'com.github.WindSekirun:RichUtilsKt:2.3.2'
+
+    // Commons-lang (Stopwatch)
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
 }
