@@ -13,6 +13,7 @@ import com.github.windsekirun.base64benchmark.test.testFile
 import com.github.windsekirun.base64benchmark.test.testString
 import kotlinx.android.synthetic.main.activity_main.*
 import pyxis.uzuki.live.richutilskt.utils.RPickMedia
+import pyxis.uzuki.live.richutilskt.utils.isEmpty
 import pyxis.uzuki.live.richutilskt.utils.toFile
 import pyxis.uzuki.live.richutilskt.utils.toast
 
@@ -28,8 +29,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
 
         btnRun.setOnClickListener {
             testStart {
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runFileTest(code: Int, path: String) {
-        if (code != RPickMedia.PICK_SUCCESS) return
+        if (code != RPickMedia.PICK_SUCCESS || path.isEmpty()) return
         testStart {
             runFileTest(path)
         }
