@@ -40,19 +40,19 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
     // apache
-    // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.11'
     // guava
-    // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation 'com.google.guava:guava:27.0.1-android'
-    // MIG IHarderBase64
-    // https://mvnrepository.com/artifact/com.brsanthu/migbase64
+    // MIG Base64
     implementation 'com.brsanthu:migbase64:2.2'
 
-    //richutilskt
+    // Richutilskt
     implementation 'com.github.WindSekirun:RichUtilsKt:2.3.2'
 
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    // Commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+
+    // iharder
+    implementation group: 'net.iharder', name: 'base64', version: '2.3.9'
 
 }

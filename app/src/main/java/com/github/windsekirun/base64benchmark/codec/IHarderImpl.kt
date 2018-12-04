@@ -2,7 +2,7 @@ package com.github.windsekirun.base64benchmark.codec
 
 import com.github.windsekirun.base64benchmark.impl.Base64ByteCodec
 import com.github.windsekirun.base64benchmark.impl.Base64Codec
-import com.github.windsekirun.base64benchmark.module.IHarderBase64
+import net.iharder.Base64
 
 /**
  * Base64Benchmark
@@ -13,19 +13,19 @@ import com.github.windsekirun.base64benchmark.module.IHarderBase64
  */
 class IHarderImpl : Base64ByteCodec, Base64Codec {
     override fun encodeBytes(data: ByteArray): ByteArray {
-        return IHarderBase64.encodeBytesToBytes(data)
+        return Base64.encodeBytesToBytes(data)
     }
 
     override fun decodeBytes(base64: ByteArray): ByteArray {
-        return IHarderBase64.decode(base64)
+        return Base64.decode(base64)
     }
 
     override fun encode(data: ByteArray): String {
-        return IHarderBase64.encodeBytes(data)
+        return Base64.encodeBytes(data)
     }
 
     override fun decode(base64: String): ByteArray {
-        return IHarderBase64.decode(base64)
+        return Base64.decode(base64)
     }
 
 }
