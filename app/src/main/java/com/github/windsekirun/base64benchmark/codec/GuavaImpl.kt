@@ -12,6 +12,7 @@ import com.google.common.io.BaseEncoding
  */
 
 class GuavaImpl : Base64Codec {
+
     override fun encode(data: ByteArray): String {
         return BaseEncoding.base64().encode(data)
     }

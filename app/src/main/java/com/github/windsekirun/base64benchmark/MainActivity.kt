@@ -8,8 +8,11 @@ import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.github.windsekirun.base64benchmark.test.testBytes
+import com.github.windsekirun.base64benchmark.test.testFile
 import com.github.windsekirun.base64benchmark.test.testString
 import kotlinx.android.synthetic.main.activity_main.*
+import pyxis.uzuki.live.richutilskt.utils.RPickMedia
+import pyxis.uzuki.live.richutilskt.utils.toFile
 
 /**
  * Base64Benchmark
@@ -25,17 +28,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btnRun.setOnClickListener {
-            progressBar.visibility = View.VISIBLE
-
-            Handler().post {
+            testStart {
                 runByteTest()
             }
         }
 
         btnRunString.setOnClickListener {
-            progressBar.visibility = View.VISIBLE
-
-            Handler().post {
+            testStart {
                 runStringTest()
             }
         }
@@ -45,26 +44,48 @@ class MainActivity : AppCompatActivity() {
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboardManager.primaryClip = ClipData.newPlainText("text", text)
         }
+
+        btnPicture.setOnClickListener {
+            RPickMedia.instance.pickFromGallery(this) { code, path ->
+                if (code == RPickMedia.PICK_SUCCESS) {
+                    testStart {
+                        runFileTest(path)
+                    }
+                }
+            }
+        }
+
+        btnVideo.setOnClickListener {
+            RPickMedia.instance.pickFromVideo(this) { code, path ->
+                if (code == RPickMedia.PICK_SUCCESS) {
+                    testStart {
+                        runFileTest(path)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun runFileTest(path: String) {
+        val result = testFile(path.toFile())
+        val builder = StringBuilder()
+        builder.append("Test encoding file $path into Base64")
+        builder.append(System.lineSeparator())
+                .append(result.toMapString())
+                .append(System.lineSeparator())
+        testEnd(builder.toString())
     }
 
     private fun runStringTest() {
         val builder = StringBuilder()
         Constants.produceStep.forEach { builder.appendTestResult(it, false) }
-
-        runOnUiThread {
-            txtResult.text = builder.toString()
-            progressBar.visibility = View.GONE
-        }
+        testEnd(builder.toString())
     }
 
     private fun runByteTest() {
         val builder = StringBuilder()
         Constants.produceStep.forEach { builder.appendTestResult(it) }
-
-        runOnUiThread {
-            txtResult.text = builder.toString()
-            progressBar.visibility = View.GONE
-        }
+        testEnd(builder.toString())
     }
 
     private fun StringBuilder.appendTestResult(size: Int, bytes: Boolean = true) {
@@ -73,6 +94,21 @@ class MainActivity : AppCompatActivity() {
                 .append(System.lineSeparator())
                 .append(result.toMapString())
                 .append(System.lineSeparator())
+    }
+
+    private fun testStart(start: () -> Unit) {
+        progressBar.visibility = View.VISIBLE
+
+        Handler().post {
+            start()
+        }
+    }
+
+    private fun testEnd(result: String) {
+        runOnUiThread {
+            txtResult.text = result
+            progressBar.visibility = View.GONE
+        }
     }
 
     private fun <K, V> Map<K, V>.toMapString(delimiter: CharSequence = "\n"): String {
