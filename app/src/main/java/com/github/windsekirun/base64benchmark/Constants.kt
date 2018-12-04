@@ -9,5 +9,5 @@ package com.github.windsekirun.base64benchmark
  */
 
 object Constants {
-    const val  TOTAL_BUFFER_SIZE = 200 * 1000 * 1000
+    val produceStep: List<Int> = listOf(1024, 2048, 4096, 8192, 10240)
 }

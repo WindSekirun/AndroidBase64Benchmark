@@ -28,7 +28,15 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.VISIBLE
 
             Handler().post {
-                runTest()
+                runByteTest()
+            }
+        }
+
+        btnRunString.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
+
+            Handler().post {
+                runStringTest()
             }
         }
 
@@ -39,45 +47,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun runTest() {
-        val byte100 = testBytes(100)
-        val byte1000 = testBytes(1000)
-        val byteMax = testBytes(Constants.TOTAL_BUFFER_SIZE)
-
-        val string100 = testString(100)
-        val string1000 = testString(1000)
-        val stringMax = testString(Constants.TOTAL_BUFFER_SIZE)
-
+    private fun runStringTest() {
         val builder = StringBuilder()
-        builder.append("Test ByteArray with bufferSize 100")
-                .append(System.lineSeparator())
-                .append(byte100.toMapString())
-                .append(System.lineSeparator())
-
-        builder.append("Test ByteArray with bufferSize 1000")
-                .append(System.lineSeparator())
-                .append(byte1000.toMapString())
-                .append(System.lineSeparator())
-
-        builder.append("Test ByteArray with bufferSize ${Constants.TOTAL_BUFFER_SIZE}")
-                .append(System.lineSeparator())
-                .append(byteMax.toMapString())
-                .append(System.lineSeparator())
-
-        builder.append("Test String with bufferSize 100")
-                .append(System.lineSeparator())
-                .append(string100.toMapString())
-                .append(System.lineSeparator())
-
-        builder.append("Test String with bufferSize 1000")
-                .append(System.lineSeparator())
-                .append(string1000.toMapString())
-                .append(System.lineSeparator())
-
-        builder.append("Test String with bufferSize ${Constants.TOTAL_BUFFER_SIZE}")
-                .append(System.lineSeparator())
-                .append(stringMax.toMapString())
-                .append(System.lineSeparator())
+        Constants.produceStep.forEach { builder.appendTestResult(it, false) }
 
         runOnUiThread {
             txtResult.text = builder.toString()
@@ -85,13 +57,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @JvmOverloads
-    fun <K, V> Map<K, V>.toMapString(delimiter: CharSequence = "\n"): String {
+    private fun runByteTest() {
+        val builder = StringBuilder()
+        Constants.produceStep.forEach { builder.appendTestResult(it) }
+
+        runOnUiThread {
+            txtResult.text = builder.toString()
+            progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun StringBuilder.appendTestResult(size: Int, bytes: Boolean = true) {
+        val result = if (bytes) testBytes(size) else testString(size)
+        this.append("Test ${if (bytes) "ByteArray" else "String"} with size $size, count $size")
+                .append(System.lineSeparator())
+                .append(result.toMapString())
+                .append(System.lineSeparator())
+    }
+
+    private fun <K, V> Map<K, V>.toMapString(delimiter: CharSequence = "\n"): String {
         val builder = StringBuilder()
         val lists = this.entries.toList()
         (0 until lists.size)
                 .map { lists[it] }
-                .forEach { builder.append("[${it.key}] -> [${it.value}]$delimiter") }
+                .forEach { builder.append("${it.key} -> ${it.value}$delimiter") }
         return builder.toString()
     }
 }

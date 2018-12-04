@@ -1,9 +1,10 @@
 package com.github.windsekirun.base64benchmark.test
 
-import com.github.windsekirun.base64benchmark.Constants.TOTAL_BUFFER_SIZE
 import com.github.windsekirun.base64benchmark.codec.*
+import com.github.windsekirun.base64benchmark.impl.Base64ByteCodec
 import com.github.windsekirun.base64benchmark.impl.Base64Codec
 import com.github.windsekirun.base64benchmark.model.TestResult
+import java.io.File
 import java.io.IOException
 import java.util.*
 
@@ -21,23 +22,18 @@ val codecList: List<Base64Codec> = listOf(AndroidImpl(), ApacheImpl(), Java8Impl
 @Throws(IOException::class, InterruptedException::class)
 fun testString(bufferSize: Int): Map<String, TestResult> {
     val r = Random(125) //seed is set to make results reproducible
-    val buffers = ArrayList<ByteArray>(TOTAL_BUFFER_SIZE / bufferSize)
-    for (i in 0 until TOTAL_BUFFER_SIZE / bufferSize) {
+    val buffers = ArrayList<ByteArray>(bufferSize)
+    for (i in 0 until bufferSize) {
         val buf = ByteArray(bufferSize)
         r.nextBytes(buf)
         buffers.add(buf)
     }
 
-    for (codec in codecList) {
-        testStringCodec(codec, buffers)
-        System.gc()
-    }
 
-    val results = HashMap<String, TestResult>(5)
+    val results = HashMap<String, TestResult>()
     for (codec in codecList) {
         val name = codec.javaClass.simpleName
         results[name] = testStringCodec(codec, buffers)
-        System.gc()
     }
 
     return results
