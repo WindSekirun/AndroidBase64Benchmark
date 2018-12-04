@@ -5,7 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.text.format.Formatter
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.github.windsekirun.base64benchmark.test.testBytes
@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         btnRun.setOnClickListener {
             testStart {
                 runByteTest()
@@ -41,6 +43,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        btnPicture.setOnClickListener {
+            RPickMedia.instance.pickFromGallery(this) { code, path ->
+                runFileTest(code, path)
+            }
+        }
+
+        btnVideo.setOnClickListener {
+            RPickMedia.instance.pickFromVideo(this) { code, path ->
+                runFileTest(code, path)
+            }
+        }
+
         btnClipboard.setOnClickListener {
             val text = txtResult.text
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -48,25 +62,12 @@ class MainActivity : AppCompatActivity() {
 
             toast("Copied to clipboard.")
         }
+    }
 
-        btnPicture.setOnClickListener {
-            RPickMedia.instance.pickFromGallery(this) { code, path ->
-                if (code == RPickMedia.PICK_SUCCESS) {
-                    testStart {
-                        runFileTest(path)
-                    }
-                }
-            }
-        }
-
-        btnVideo.setOnClickListener {
-            RPickMedia.instance.pickFromVideo(this) { code, path ->
-                if (code == RPickMedia.PICK_SUCCESS) {
-                    testStart {
-                        runFileTest(path)
-                    }
-                }
-            }
+    private fun runFileTest(code: Int, path: String) {
+        if (code != RPickMedia.PICK_SUCCESS) return
+        testStart {
+            runFileTest(path)
         }
     }
 
@@ -76,9 +77,9 @@ class MainActivity : AppCompatActivity() {
         val result = testFile(file)
         val builder = StringBuilder()
         builder.append("Test encoding file ${file.name} into Base64")
-                .append(System.lineSeparator())
-                .append(result.toMapString())
-                .append(System.lineSeparator())
+            .append(System.lineSeparator())
+            .append(result.toMapString())
+            .append(System.lineSeparator())
 
         testEnd(builder.toString())
     }
@@ -98,9 +99,9 @@ class MainActivity : AppCompatActivity() {
     private fun StringBuilder.appendTestResult(size: Int, bytes: Boolean = true) {
         val result = if (bytes) testBytes(size) else testString(size)
         this.append("Test ${if (bytes) "ByteArray" else "String"} with size $size, count $size")
-                .append(System.lineSeparator())
-                .append(result.toMapString())
-                .append(System.lineSeparator())
+            .append(System.lineSeparator())
+            .append(result.toMapString())
+            .append(System.lineSeparator())
     }
 
     private fun testStart(start: () -> Unit) {
@@ -122,8 +123,8 @@ class MainActivity : AppCompatActivity() {
         val builder = StringBuilder()
         val lists = this.entries.toList()
         (0 until lists.size)
-                .map { lists[it] }
-                .forEach { builder.append("${it.key} -> ${it.value}$delimiter") }
+            .map { lists[it] }
+            .forEach { builder.append("${it.key} -> ${it.value}$delimiter") }
         return builder.toString()
     }
 }
