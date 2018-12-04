@@ -18,7 +18,6 @@ import java.util.*
  */
 
 
-
 @Throws(IOException::class, InterruptedException::class)
 fun testString(bufferSize: Int): Map<String, TestResult> {
     val r = Random(125)
